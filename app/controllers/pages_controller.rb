@@ -4,11 +4,13 @@ class PagesController < ApplicationController
     storyId = 1024
 
     # marvel query params
-    timestamp = Time.now.to_i.to_s 
-    hash = Digest::MD5.hexdigest(timestamp + ENV["PRIVATE_KEY"] + ENV["PUBLIC_KEY"]).to_s
+    timestamp = Time.now.to_i.to_s
+    privateKey = ENV["PRIVATE_KEY"] || "1234"
+    publicKey = ENV["PUBLIC_KEY"] || "1234"
+    hash = Digest::MD5.hexdigest(timestamp + privateKey + publicKey).to_s
     
     # send request to marvel api
-    response = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories/#{storyId}", query: { apikey: ENV["PUBLIC_KEY"], ts: timestamp, hash: hash})
+    response = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories/#{storyId}", query: { apikey: publicKey, ts: timestamp, hash: hash})
     
     # error handling
     if (response["code"] != 200)
@@ -21,7 +23,7 @@ class PagesController < ApplicationController
     # new request to fetch characters thumbnails
     characters = []
     @story["characters"]["items"].each do |character|
-      response = HTTParty.get(character["resourceURI"], query: { apikey: ENV["PUBLIC_KEY"], ts: timestamp, hash: hash})
+      response = HTTParty.get(character["resourceURI"], query: { apikey: publicKey, ts: timestamp, hash: hash})
       thumbnail = response["data"]["results"].first["thumbnail"]
       character["thumbnail"] = thumbnail["path"] + "." + thumbnail["extension"]
       characters.push(character)
