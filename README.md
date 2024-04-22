@@ -21,6 +21,12 @@ Install all gems
 bundle install
 ```
 
+Create a `.env` file in the root folder and set up your Marvel API keys
+```shell
+PRIVATE_KEY=1234
+PUBLIC_KEY=1234
+```
+
 Run the application
 ```shell
 bin/dev
