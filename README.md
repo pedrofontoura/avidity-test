@@ -1,24 +1,28 @@
-# README
+# The comics test
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the solution for the comics test provided by Avidity. The task required the development of an HTML page listing the characters from a Marvel story of a specific character using the [Marvel API](http://developer.marvel.com/docs). The character chosen for this solution was [Hawkeye](https://en.wikipedia.org/wiki/Hawkeye_(Clint_Barton)).
 
-Things you may want to cover:
+## Requirements
 
-* Ruby version
+Ruby 3.1.2
 
-* System dependencies
+## Run locally
 
-* Configuration
+To get a local copy up and running, follow these steps:
 
-* Database creation
+Clone the repo
+```shell
+git clone https://github.com/pedrofontoura/avidity-test.git
+cd avidity-test
+```
 
-* Database initialization
+Install all gems
+```shell
+bundle install
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Run the application
+```shell
+bin/dev
+```
+And now you can visit the site with the URL http://localhost:3000
