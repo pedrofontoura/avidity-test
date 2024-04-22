@@ -1,11 +1,5 @@
-<h1> <%= @story["title"] %> </h1>
-<p > <%= @story["description"] %> </p>
-
-<% @characters.each do |character| %>
-    <div>
-      <%= image_tag(character["thumbnail"]) %>
-      <p> <%= character["name"] %> </p>
-    </div>
-<% end %>
-
-<%= raw(@attribution) %>
+<% if (@story) %>
+    <%= render "story" %>
+<% else %>
+    <%= render "notfound" %>
+<% end  %>
