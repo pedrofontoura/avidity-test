@@ -21,16 +21,10 @@ class PagesController < ApplicationController
     @story = response["data"]["results"].first
 
     # new request to fetch characters thumbnails
-    characters = []
-    @story["characters"]["items"].each do |character|
-      response = HTTParty.get(character["resourceURI"], query: { apikey: publicKey, ts: timestamp, hash: hash})
-      thumbnail = response["data"]["results"].first["thumbnail"]
-      character["thumbnail"] = thumbnail["path"] + "." + thumbnail["extension"]
-      characters.push(character)
-    end
+    response = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories/#{storyId}/characters", query: { apikey: publicKey, ts: timestamp, hash: hash})
 
     # assign values to view
-    @characters = characters
+    @characters = response["data"]["results"]
     @attribution = response["attributionHTML"]
   end
 end
