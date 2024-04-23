@@ -8,21 +8,22 @@ class PagesController < ApplicationController
 
     # picking a random story from hawkeye
     characterId = 1009338
-    storyResponse = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories", query: { characters: characterId, apikey: publicKey, ts: timestamp, hash: hash})
-    story = storyResponse["data"]["results"].sample
-    storyId = story["id"]
+    response = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories", query: { characters: characterId, apikey: publicKey, ts: timestamp, hash: hash})
+    stories = JSON.parse(response.body, object_class: OpenStruct)
+    story = stories.data.results.sample
 
     # error handling
-    if (storyResponse["code"] != 200)
+    if (response.code != 200)
       return
     end
 
     # new request to fetch characters thumbnails
-    charactersResponse = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories/#{storyId}/characters", query: { apikey: publicKey, ts: timestamp, hash: hash})
+    response = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories/#{story.id}/characters", query: { apikey: publicKey, ts: timestamp, hash: hash})
+    characters = JSON.parse(response.body, object_class: OpenStruct)
 
     # assign values to view
     @story = story
-    @characters = charactersResponse["data"]["results"]
-    @attribution = storyResponse["attributionHTML"]
+    @characters = characters.data.results
+    @attribution = stories.attributionHTML
   end
 end
