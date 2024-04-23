@@ -9,8 +9,8 @@ class PagesController < ApplicationController
     # picking a random story from hawkeye
     characterId = 1009338
     storyResponse = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories", query: { characters: characterId, apikey: publicKey, ts: timestamp, hash: hash})
-    @story = storyResponse["data"]["results"].sample
-    storyId = @story["id"]
+    story = storyResponse["data"]["results"].sample
+    storyId = story["id"]
 
     # error handling
     if (storyResponse["code"] != 200)
@@ -21,6 +21,7 @@ class PagesController < ApplicationController
     charactersResponse = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories/#{storyId}/characters", query: { apikey: publicKey, ts: timestamp, hash: hash})
 
     # assign values to view
+    @story = story
     @characters = charactersResponse["data"]["results"]
     @attribution = storyResponse["attributionHTML"]
   end
