@@ -10,7 +10,7 @@ class PagesController < ApplicationController
     characterId = 1009338
     response = HTTParty.get("https://gateway.marvel.com:443/v1/public/stories", query: { characters: characterId, apikey: publicKey, ts: timestamp, hash: hash})
     stories = JSON.parse(response.body, object_class: OpenStruct)
-    story = stories.data.results.sample
+    story = stories.data&.results&.sample
 
     # error handling
     if (response.code != 200)
@@ -23,7 +23,7 @@ class PagesController < ApplicationController
 
     # assign values to view
     @story = story
-    @characters = characters.data.results
+    @characters = characters.data&.results
     @attribution = stories.attributionHTML
   end
 end
